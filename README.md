@@ -27,3 +27,5 @@ If you are a Dev and want to be able to access logins of different accounts quic
 -save and run 
 
 now you can login to different users in the same session
+
+to open the project simply import the entire project as a directory in the file tab at the top right of Eclipse
