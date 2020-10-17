@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainSystem.Parents">
+   <children>
+      <Pane prefHeight="477.0" prefWidth="600.0">
+         <children>
+            <TableView fx:id="table" layoutX="-2.0" layoutY="122.0" prefHeight="279.0" prefWidth="600.0">
+              <columns>
+                <TableColumn fx:id="col_ID" prefWidth="104.00005948543549" text="Student ID" />
+                <TableColumn fx:id="col_Fname" prefWidth="94.39990997314453" text="First Name" />
+                  <TableColumn fx:id="col_Lname" prefWidth="99.20001220703125" text="Last Name" />
+                  <TableColumn fx:id="col_Email" prefWidth="97.5999755859375" text="Email" />
+                  <TableColumn fx:id="col_Class" prefWidth="100.0" text="Current Course" />
+                  <TableColumn fx:id="col_Grade" prefWidth="100.0" text="Current Grade" />
+              </columns>
+            </TableView>
+            <Button layoutX="297.0" layoutY="82.0" mnemonicParsing="false" onAction="#findClick" text="View" />
+            <Label layoutX="155.0" layoutY="25.0" text="Click Below To See Your Kid's Information">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button layoutX="521.0" layoutY="82.0" mnemonicParsing="false" onAction="#exitClick" text="Exit" />
+         </children>
+      </Pane>
+   </children>
+</VBox>

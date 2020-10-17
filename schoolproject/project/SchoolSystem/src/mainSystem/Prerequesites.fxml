@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainSystem.Admissions">
+   <children>
+      <Pane prefHeight="405.0" prefWidth="600.0">
+         <children>
+            <Label layoutX="232.0" layoutY="31.0" text="Prerequisites">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <TextArea editable="false" layoutX="82.0" layoutY="73.0" prefHeight="232.0" prefWidth="436.0" text="Students Intending to apply to the University of Global Maths&#10;should be aware that they are required to have completed their&#10;Math and English courses for grade 10 and 11 of highshool with &#10;a GPA of atleast 4.0.&#10; ">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextArea>
+            <Button layoutX="30.0" layoutY="360.0" mnemonicParsing="false" onAction="#exitPrerequesites" text="Exit" />
+            <Button fx:id="yesRequirementsBtn" layoutX="241.0" layoutY="348.0" mnemonicParsing="false" onAction="#yesRequirements" text="Yes" />
+            <Button layoutX="335.0" layoutY="348.0" mnemonicParsing="false" onAction="#noRequirements" text="No" />
+            <Label layoutX="147.0" layoutY="305.0" prefHeight="27.0" prefWidth="324.0" text="Do You meet the requirements  Above ?">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</VBox>

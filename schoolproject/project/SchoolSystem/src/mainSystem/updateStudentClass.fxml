@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="626.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainSystem.UpdateStudentClassController">
+   <children>
+      <Pane prefHeight="630.0" prefWidth="616.0">
+         <children>
+            <TableView fx:id="table" layoutX="-3.0" layoutY="364.0" prefHeight="228.0" prefWidth="619.0">
+              <columns>
+                <TableColumn fx:id="col_StudentID" prefWidth="65.59994196891785" text="Student ID" />
+                <TableColumn fx:id="col_FName" prefWidth="76.79998779296875" text="First Name" />
+                  <TableColumn fx:id="col_LName" prefWidth="82.39996337890625" text="Last Name " />
+                  <TableColumn fx:id="col_ClassID" prefWidth="51.99995422363281" text="Class ID " />
+                  <TableColumn fx:id="col_ClassStatus" prefWidth="95.20001220703125" text="Class Status" />
+                  <TableColumn fx:id="col_Request" prefWidth="127.20001220703125" text="Request" />
+                  <TableColumn fx:id="col_Answer" prefWidth="123.20001220703125" text="Admin Answer" />
+              </columns>
+            </TableView>
+            <Label layoutX="19.0" layoutY="112.0" text="All Student Requests : " />
+            <ComboBox fx:id="additionCbBX" layoutX="142.0" layoutY="108.0" onAction="#selectAddition" prefWidth="150.0" promptText="Requests" />
+            <Label layoutX="50.0" layoutY="56.0" text="Approve class addition request">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="324.0" layoutY="112.0" text="All Student Requests : " />
+            <ComboBox fx:id="removalCbBx" layoutX="447.0" layoutY="108.0" onAction="#selectRemoval" prefWidth="150.0" promptText="Requests" />
+            <Label layoutX="355.0" layoutY="56.0" prefHeight="25.0" prefWidth="226.0" text="Approve class Removal request">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="173.0" layoutY="231.0" text="All Student Requests : " />
+            <ComboBox fx:id="courseChangeCbBX" layoutX="296.0" layoutY="227.0" onAction="#selectCourseChange" prefWidth="150.0" promptText="Requests" />
+            <Label layoutX="193.0" layoutY="184.0" text="Approve Course Change Request">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="76.0" layoutY="326.0" text="The Table Below Contains All The Info On The Student Request" underline="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="120.0" layoutY="14.0" text="Select A Request Below To View It's Information" underline="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button layoutX="285.0" layoutY="301.0" mnemonicParsing="false" onAction="#applyClick" text="Apply" />
+            <Label layoutX="204.0" layoutY="586.0" prefHeight="33.0" prefWidth="249.0" text="The Column Value 9999 means null" underline="true">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <RadioButton fx:id="radioBtnCourseAdd1" layoutX="292.0" layoutY="259.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="70.0" text="Approve">
+               <toggleGroup>
+                  <ToggleGroup fx:id="courseGroup" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="radioBtnCourseAdd2" layoutX="371.0" layoutY="259.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="70.0" text="Decline" toggleGroup="$courseGroup" />
+            <RadioButton fx:id="radioBtnRemv1" layoutX="443.0" layoutY="141.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="70.0" text="Approve">
+               <toggleGroup>
+                  <ToggleGroup fx:id="classRemove" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="radioBtnRemv2" layoutX="522.0" layoutY="141.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="70.0" text="Decline" toggleGroup="$classRemove" />
+            <RadioButton fx:id="radioBtnAdd1" layoutX="138.0" layoutY="141.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="70.0" text="Approve">
+               <toggleGroup>
+                  <ToggleGroup fx:id="classAdd" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="radioBtnAdd2" layoutX="217.0" layoutY="141.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="70.0" text="Decline" toggleGroup="$classAdd" />
+            <Button layoutX="554.0" layoutY="311.0" mnemonicParsing="false" onAction="#exitClick" text="Exit" />
+         </children></Pane>
+   </children>
+</VBox>
