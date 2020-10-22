@@ -188,7 +188,7 @@ public class Person
 			type = rs.getString("Type");
 		}
 		rs.close();
-		if (type == "Student")
+		if (type.equals("Student"))
 		{
 			SQLConnecter.executeQuery("DELETE FROM Students WHERE StudentID = '"+id+"';DELETE FROM Users WHERE ID = '"+id+"'; ");
 		}
