@@ -53,6 +53,16 @@ public class RemoveClassController implements Initializable{
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
+		finally {
+			try {
+				if(rs != null)
+					rs.close();
+				if(con != null)
+					con.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@FXML

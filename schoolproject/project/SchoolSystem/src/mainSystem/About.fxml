@@ -34,7 +34,7 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <TextArea layoutX="4.0" layoutY="13.0" prefHeight="224.0" prefWidth="712.0" text="Welcome to Global Maths University ! We are a unique University when it comes to the management systems. &#10;This application here represents a way for every user involved in a school including a parent or an Administrator and more , &#10;to have access to a management system of their own and be able to successfully achieve their desired tasks &#10;like viewing students in a class or even editing a user record in directly in the school database ! &#10;In short , this application will be distributed to all users , allowing them all to have access to a part in the school.&#10;Enjoy !&#10;-Global Maths Director &#10;&#10;&#10;" wrapText="true">
+                  <TextArea layoutX="4.0" layoutY="13.0" prefHeight="224.0" prefWidth="712.0" text="Welcome to Global Maths University ! We are a unique University when it comes to the management systems. &#10;This application here represents a way for every user involved in a school including a parent or an Administrator and more , &#10;to have access to a management system of their own and be able to successfully achieve their desired tasks &#10;like viewing students in a class or even editing a user record directly in the school database ! &#10;In short , this application will be distributed to all users , allowing them all to have access to a part in the school.&#10;Enjoy !&#10;-Global Maths Director &#10;&#10;&#10;" wrapText="true">
                      <font>
                         <Font name="Arial Black" size="12.0" />
                      </font>

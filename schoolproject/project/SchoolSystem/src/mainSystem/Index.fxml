@@ -82,6 +82,7 @@
                         <Font size="48.0" />
                      </font>
                   </Label>
+                  <Button fx:id="loginBtn" layoutY="195.0" mnemonicParsing="false" onAction="#loginClick" prefHeight="26.0" prefWidth="89.0" text="Login" visible="false" />
                </children>
             </AnchorPane>
         </items>

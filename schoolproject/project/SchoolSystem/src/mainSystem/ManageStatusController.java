@@ -25,6 +25,8 @@ public class ManageStatusController implements Initializable{
 	@FXML
 	private ComboBox<String>allStudentsCbBx;
 	
+	int classID = 0;
+	
 	@FXML
 	private ComboBox<String>statusCbBx;
 	
@@ -48,14 +50,15 @@ public class ManageStatusController implements Initializable{
 		try {
 			rs = con.createStatement().executeQuery("SELECT ClassID FROM Teachers WHERE Teacher_ID = "+Main.currentUser.getId()+"");
 			
-			while(rs.next()) {
+			while(rs.next()) {//gets all teacher class ids
 				rs1 = con.createStatement().executeQuery("SELECT StudentID FROM Grades WHERE ClassID = "+rs.getInt("ClassID")+"");
 				
-				while(rs1.next()) {
-					rs2 = con.createStatement().executeQuery("SELECT Status FROM Status WHERE StudentID = "+rs1.getInt("StudentID")+"");
+				while(rs1.next()) {//gets all the students in that class id
+					rs2 = con.createStatement().executeQuery("SELECT Status FROM Status WHERE StudentID = "+rs1.getInt("StudentID")+" AND ClassID = "+rs.getInt("ClassID")+"");
 					
 					if(rs2.next()) {
 						allStudentsStatus.add("Student ID : "+rs1.getInt("StudentID")+" - Class ID : "+rs.getInt("ClassID")+" - Status : "+rs2.getString("Status")+"");
+						classID = rs.getInt("ClassID");
 					}
 				}
 			}
@@ -99,10 +102,18 @@ public class ManageStatusController implements Initializable{
 						Alert alert  = new Alert(Alert.AlertType.CONFIRMATION,msg);
 						Optional<ButtonType> result = alert.showAndWait();
 						if (result.get() == ButtonType.OK){
-							SQLConnecter.executeQuery("UPDATE Status SET Status = '"+statusCbBx.getSelectionModel().getSelectedItem().toString()+"' WHERE StudentID = '"+Integer.parseInt(allStudentsCbBx.getSelectionModel().getSelectedItem().toString().substring(13,16).replaceAll("[^0-9]", ""))+"'");
+							SQLConnecter.executeQuery("UPDATE Status SET Status = '"+statusCbBx.getSelectionModel().getSelectedItem().toString()+"' WHERE StudentID = '"+Integer.parseInt(allStudentsCbBx.getSelectionModel().getSelectedItem().toString().substring(13,16).replaceAll("[^0-9]", ""))+"' AND ClassID = "+classID+"");
+							new Alert(Alert.AlertType.INFORMATION,"Status Updated!").showAndWait();
 						} else {
 						    // ... user chose CANCEL dont do anything 
 						}
+					}
+					else {
+						if(statusCbBx.getSelectionModel().getSelectedItem().equals("Completed")) {
+							new Alert(Alert.AlertType.INFORMATION,"Make Sure To Update The Student's Final Grade").showAndWait();
+						}
+						SQLConnecter.executeQuery("UPDATE Status SET Status = '"+statusCbBx.getSelectionModel().getSelectedItem().toString()+"' WHERE StudentID = '"+Integer.parseInt(allStudentsCbBx.getSelectionModel().getSelectedItem().toString().substring(13,16).replaceAll("[^0-9]", ""))+"' AND ClassID = "+classID+"");
+						new Alert(Alert.AlertType.INFORMATION,"Status Updated!").showAndWait();
 					}
 				}
 				else {

@@ -143,88 +143,121 @@ public class Person
 		Connection con = SQLConnecter.connect();
 		String pFname = "";
 		String pLname = "";
-		
 		String query ="";
-		if (type == "Student")
-		{
-			rs = con.createStatement().executeQuery("SELECT FirstName,LastName FROM Users WHERE LastName = '"+Lname+"' AND Type = 'Parent'");
+		try {
 			
-			if(rs.next()) {
-				pFname = rs.getString("FirstName");
-				pLname = rs.getString("LastName");
+			if (type == "Student")
+			{
+				rs = con.createStatement().executeQuery("SELECT FirstName,LastName FROM Users WHERE LastName = '"+Lname+"' AND Type = 'Parent'");
+				
+				if(rs.next()) {
+					pFname = rs.getString("FirstName");
+					pLname = rs.getString("LastName");
+				}
+				else {//means the student has no parents in the system
+					new Alert(Alert.AlertType.ERROR,"No Parents In System,Please Add Student's Parents").showAndWait();
+				}
+				query ="INSERT INTO Users (FirstName, LastName, PhoneNumber,Email,Type) VALUES ('"+Fname+"', '"+Lname+"', '"+PhoneNb+"','"+email+"','Student');"
+						+ "INSERT INTO Students (StudentID,ParentFirstName,ParentLastName,CurrentCourse) SELECT @@IDENTITY,'"+pFname+"', '"+pLname+"', 'No Course';";
+				rs.close();
+				con.close();
 			}
-			else {//means the student has no parents in the system
-				new Alert(Alert.AlertType.ERROR,"No Parents In System,Please Add Student's Parents").showAndWait();
+			else if (type == "Parent")
+			{
+				query ="INSERT INTO Users (FirstName, LastName, PhoneNumber,Email,Type) VALUES ('"+Fname+"', '"+Lname+"', '"+PhoneNb+"','"+email+"','Parent');";
 			}
-			query ="INSERT INTO Users (FirstName, LastName, PhoneNumber,Email,Type) VALUES ('"+Fname+"', '"+Lname+"', '"+PhoneNb+"','"+email+"','Student');"
-					+ "INSERT INTO Students (StudentID,ParentFirstName,ParentLastName,CurrentCourse) SELECT @@IDENTITY,'"+pFname+"', '"+pLname+"', 'No Course';";
-			rs.close();
-			con.close();
+			else if (type == "Teacher")
+			{
+				query ="INSERT INTO Users (FirstName, LastName, PhoneNumber,Email,Type) VALUES ('"+Fname+"', '"+Lname+"', '"+PhoneNb+"','"+email+"','Teacher')"
+						+ "INSERT INTO Teachers (Teacher_ID,ClassID) SELECT @@IDENTITY,NULL";//adding the most recent record which is the id
+			}
+			new Alert(Alert.AlertType.INFORMATION,"User Added!").showAndWait();
+			SQLConnecter.executeQuery(query);
+		}catch(SQLException e) {
+			e.printStackTrace();
 		}
-		else if (type == "Parent")
-		{
-			query ="INSERT INTO Users (FirstName, LastName, PhoneNumber,Email,Type) VALUES ('"+Fname+"', '"+Lname+"', '"+PhoneNb+"','"+email+"','Parent');";
+		finally {
+			try {
+				if(con != null)
+					con.close();
+				if(rs != null)
+					rs.close();
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		else if (type == "Teacher")
-		{
-			query ="INSERT INTO Users (FirstName, LastName, PhoneNumber,Email,Type) VALUES ('"+Fname+"', '"+Lname+"', '"+PhoneNb+"','"+email+"','Teacher')"
-					+ "INSERT INTO Teachers (Teacher_ID,ClassID) SELECT @@IDENTITY,NULL";//adding the most recent record which is the id
-		}
-		new Alert(Alert.AlertType.INFORMATION,"User Added!").showAndWait();
-		SQLConnecter.executeQuery(query);	
+			
 	}
 	
-	void delete(int id) throws SQLException
+	void delete(int id)
 	{
 		ResultSet rs = null;
 		ResultSet rs2 = null;
 		Connection con = SQLConnecter.connect();
 		boolean flag = false;
 		String type = "";
-		
-		rs = con.createStatement().executeQuery("SELECT Type FROM Users WHERE ID = "+id+"");
-		
-		if(rs.next()) {
-			type = rs.getString("Type");
-		}
-		rs.close();
-		if (type.equals("Student"))
-		{
-			SQLConnecter.executeQuery("DELETE FROM Students WHERE StudentID = '"+id+"';DELETE FROM Users WHERE ID = '"+id+"'; ");
-		}
-		else if (type.equals("Teacher"))
-		{
-			rs = con.createStatement().executeQuery("SELECT ClassID FROM Teachers WHERE Teacher_ID = "+id+"");
+		try {
+			rs = con.createStatement().executeQuery("SELECT Type FROM Users WHERE ID = "+id+"");
 			
-			while(rs.next()) {
-				rs2 = con.createStatement().executeQuery("SELECT Status FROM Status WHERE ClassID = "+rs.getInt("ClassID")+"");
-				
-				while(rs2.next()) {//going through every status to check for one class in progress
-					if(rs2.getString("Status").equals("In-Progress")) {
-						flag = true;
-					}
-				}
-			}
-			if(!flag) {
-				Alert alert  = new Alert(Alert.AlertType.CONFIRMATION,"Are You Sure You want To Delete?");
-				Optional<ButtonType> result = alert.showAndWait();
-				if (result.get() == ButtonType.OK){
-					SQLConnecter.executeQuery("DELETE FROM Teachers WHERE Teacher_ID = '"+id+"';DELETE FROM Users WHERE ID = '"+id+"';");
-				} else {
-				    // ... user chose CANCEL or closed the dialog
-				}
-			}
-			else {
-				String format = String.format("%s%n%s", "Teacher Has Class In Progress","Please Go To \"Update Teacher Class\"");
-				new Alert(Alert.AlertType.ERROR,format).showAndWait();
+			if(rs.next()) {
+				type = rs.getString("Type");
 			}
 			rs.close();
-			rs2.close();
-			con.close();
+			if (type.equals("Student"))
+			{
+				SQLConnecter.executeQuery("DELETE FROM Students WHERE StudentID = '"+id+"';DELETE FROM Users WHERE ID = '"+id+"'; ");
+			}
+			else if (type.equals("Teacher"))
+			{
+				rs = con.createStatement().executeQuery("SELECT ClassID FROM Teachers WHERE Teacher_ID = "+id+"");
+				
+				while(rs.next()) {
+					rs2 = con.createStatement().executeQuery("SELECT Status FROM Status WHERE ClassID = "+rs.getInt("ClassID")+"");
+					
+					while(rs2.next()) {//going through every status to check for one class in progress
+						if(rs2.getString("Status").equals("In-Progress")) {
+							flag = true;
+						}
+					}
+				}
+				if(!flag) {
+					Alert alert  = new Alert(Alert.AlertType.CONFIRMATION,"Are You Sure You want To Delete?");
+					Optional<ButtonType> result = alert.showAndWait();
+					if (result.get() == ButtonType.OK){
+						SQLConnecter.executeQuery("DELETE FROM Teachers WHERE Teacher_ID = '"+id+"';DELETE FROM Users WHERE ID = '"+id+"';");
+					} else {
+					    // ... user chose CANCEL or closed the dialog
+					}
+				}
+				else {
+					String format = String.format("%s%n%s", "Teacher Has Class In Progress","Please Go To \"Update Teacher Class\"");
+					new Alert(Alert.AlertType.ERROR,format).showAndWait();
+				}
+				rs.close();
+				rs2.close();
+				con.close();
+			}
+			else if(type.equals("Parent")) {
+				SQLConnecter.executeQuery("DELETE FROM Users WHERE ID = "+id+"");
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
 		}
-		else if(type.equals("Parent")) {
-			SQLConnecter.executeQuery("DELETE FROM Users WHERE ID = "+id+"");
+		finally {
+			try {
+				if(con != null)
+					con.close();
+				if(rs != null)
+					rs.close();
+				if(rs2 != null)
+					rs2.close();
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
 		}
+		
 	}
 	
 	void updatePhoneNb(int id,String newPhoneNb) throws SQLException
@@ -269,12 +302,11 @@ public class Person
 		}
 		finally {
 			try {
-				if(con != null) {
+				if(con != null) 
 					con.close();
-				}
-					if(rs != null) {
-						rs.close();
-					}	
+				if(rs != null) 
+					rs.close();
+						
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -349,6 +381,17 @@ public class Person
 			con.close();
 		}catch(SQLException e) {
 			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(con != null)
+					con.close();
+				if(rs != null)
+					rs.close();
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

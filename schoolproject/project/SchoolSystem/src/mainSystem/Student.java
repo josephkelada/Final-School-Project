@@ -182,7 +182,7 @@ public class Student extends Person //inheritance
 		}
 	}
 	
-	ObservableList<Student> getAllRecords(int id) throws SQLException//polymorphism
+	ObservableList<Student> getAllRecords(int id)//polymorphism
 	{
 		ResultSet rs = null;
 		ResultSet rs2 = null;
@@ -197,14 +197,18 @@ public class Student extends Person //inheritance
 		} catch (SQLException e) 
 		{
 			e.printStackTrace();
-		}finally
-		{
-			if(con != null)
-				con.close();
-			if(rs != null)
-				rs.close();
-			if(rs2 != null)
-				rs2.close();
+		}
+		finally {
+			try {
+				if(rs != null)
+					rs.close();
+				if(con != null)
+					con.close();
+				if(rs2 != null)
+					rs2.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return personList;
 	}
@@ -268,6 +272,18 @@ public class Student extends Person //inheritance
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
+		finally {
+			try {
+				if(rs != null)
+					rs.close();
+				if(rs1 != null)
+					rs1.close();
+				if(rs2 != null)
+					rs2.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		return courseName;
 	}
 	
@@ -318,7 +334,7 @@ public class Student extends Person //inheritance
 					pers.setGrade("Not-Started");//if all grades = -1 , that means the student hasn't started yet
 				}
 				else {
-					pers.setGrade(Integer.toString(currentGrade));
+					pers.setGrade(Integer.toString(currentGrade) + "%");
 				}
 				
 				persList.add(pers);

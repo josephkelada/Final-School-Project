@@ -290,6 +290,20 @@ public class StudentClasses
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
+		finally{
+			try {
+				if(con != null)
+					con.close();
+				if(rs != null)
+					rs.close();
+				if(rs1 != null)
+					rs1.close();
+				if(rs2 != null)
+					rs2.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		return courseName;
 	}
 	

@@ -24,15 +24,24 @@ public class Teachers extends Main
     @FXML
     void manageCurriculumClick(ActionEvent event) throws IOException
     {
+    	ResultSet rs = null;
+    	
     	try {
-			ResultSet rs = SQLConnecter.connect().createStatement().executeQuery("SELECT * FROM Teachers WHERE Teacher_ID = '"+Main.currentUser.getId()+"'");
-			if(!rs.isBeforeFirst()) {
-				new Alert(Alert.AlertType.ERROR,"You Must Login As A Teacher Before Continuing").showAndWait();
-				flag = true;
+    		rs = SQLConnecter.connect().createStatement().executeQuery("SELECT * FROM Teachers WHERE Teacher_ID = '"+Main.currentUser.getId()+"'");
+    		if(!rs.isBeforeFirst()) {
+    			new Alert(Alert.AlertType.ERROR,"You Must Login As A Teacher Before Continuing").showAndWait();
+    			flag = true;
 			}
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				if(rs != null)
+					rs.close();
+			}catch(SQLException e1) {
+				e1.printStackTrace();
+			}
 		}
     	
     	if(!flag) {
@@ -48,8 +57,9 @@ public class Teachers extends Main
     
     @FXML
     void viewMyStudentsClick(ActionEvent e) throws IOException{
+    	ResultSet rs = null;
     	try {
-			ResultSet rs = SQLConnecter.connect().createStatement().executeQuery("SELECT * FROM Teachers WHERE Teacher_ID = '"+Main.currentUser.getId()+"'");
+			rs = SQLConnecter.connect().createStatement().executeQuery("SELECT * FROM Teachers WHERE Teacher_ID = '"+Main.currentUser.getId()+"'");
 			if(!rs.isBeforeFirst()) {
 				new Alert(Alert.AlertType.ERROR,"You Must Login As A Teacher Before Continuing").showAndWait();
 				flag = true;
@@ -57,8 +67,14 @@ public class Teachers extends Main
 		}
 		catch(SQLException ee) {
 			ee.printStackTrace();
+		}finally{
+			try {
+				if(rs != null)
+					rs.close();
+			}catch(SQLException e1) {
+				e1.printStackTrace();
+			}
 		}
-    	
     	if(!flag) {
     		flag = false;
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainSystem/ViewStudentGrades.fxml"));
@@ -72,8 +88,9 @@ public class Teachers extends Main
     
     @FXML
     void ManageStatusClick(ActionEvent e) throws IOException{
+    	ResultSet rs = null;
     	try {
-			ResultSet rs = SQLConnecter.connect().createStatement().executeQuery("SELECT * FROM Teachers WHERE Teacher_ID = '"+Main.currentUser.getId()+"'");
+			rs = SQLConnecter.connect().createStatement().executeQuery("SELECT * FROM Teachers WHERE Teacher_ID = '"+Main.currentUser.getId()+"'");
 			if(!rs.isBeforeFirst()) {
 				new Alert(Alert.AlertType.ERROR,"You Must Login As A Teacher Before Continuing").showAndWait();
 				flag = true;
@@ -81,8 +98,14 @@ public class Teachers extends Main
 		}
 		catch(SQLException ee) {
 			ee.printStackTrace();
+		}finally{
+			try {
+				if(rs != null)
+					rs.close();
+			}catch(SQLException e1) {
+				e1.printStackTrace();
+			}
 		}
-    	
     	if(!flag) {
     		flag = false;
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainSystem/manageStatus.fxml"));

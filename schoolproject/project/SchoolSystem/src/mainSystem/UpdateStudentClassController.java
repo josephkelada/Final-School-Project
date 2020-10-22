@@ -294,7 +294,16 @@ public class UpdateStudentClassController implements Initializable{
     		checkLists();
     	}catch(SQLException e) {
     		e.printStackTrace();
-    	}
+    	}finally{
+			try {
+				if(rs != null)
+					rs.close();
+				if(con != null)
+					con.close();
+			}catch(SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
     }
     
     int getClassID(int studentID) {

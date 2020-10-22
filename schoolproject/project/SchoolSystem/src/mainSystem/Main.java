@@ -26,6 +26,9 @@ public class Main extends Application
 	Button dummyBtnStd;
 	
 	@FXML
+	Button loginBtn;
+	
+	@FXML
 	Label welcomeTxt;
 	
 	@FXML
@@ -79,17 +82,34 @@ public class Main extends Application
 	{
 		Connection con = SQLConnecter.connect();
     	ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM Students WHERE StudentID = '"+Main.currentUser.getId()+"'");
-		if(!rs1.isBeforeFirst()) {
-			new Alert(Alert.AlertType.ERROR,format.substring(0, 33)).showAndWait();
-		}
-		else {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainSystem/Admissions.fxml"));
-	    	Parent root = loader.load();
-	    	Scene scene = new Scene(root);
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.show();
-		}
+		
+    	try {
+    		if(!rs1.isBeforeFirst()) {
+    			new Alert(Alert.AlertType.ERROR,format.substring(0, 33)).showAndWait();
+    		}
+    		else {
+    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainSystem/Admissions.fxml"));
+    	    	Parent root = loader.load();
+    	    	Scene scene = new Scene(root);
+    			Stage stage = new Stage();
+    			stage.setScene(scene);
+    			stage.show();
+    		}
+    	} 
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	finally {
+    		try {
+    			if(con != null)
+    				con.close();
+    			if(rs1 != null)
+    				rs1.close();
+    		}
+    		catch(SQLException e) {
+    			e.printStackTrace();
+    		}
+    	}
 	}
 
     @FXML
@@ -97,17 +117,34 @@ public class Main extends Application
     {
     	Connection con = SQLConnecter.connect();
     	ResultSet rs1 = con.createStatement().executeQuery("SELECT ID FROM Users WHERE ID = '"+Main.currentUser.getId()+"' AND Type = 'Admin'");
-		if(!rs1.isBeforeFirst()) {
-			new Alert(Alert.AlertType.ERROR,"You Must Be An Admin To Access This").showAndWait();
-		}
-		else {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainSystem/Admin.fxml"));
-	    	Parent root = loader.load();
-	    	Scene scene = new Scene(root);
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.show();
-		}
+		
+    	try {
+    		if(!rs1.isBeforeFirst()) {
+    			new Alert(Alert.AlertType.ERROR,"You Must Be An Admin To Access This").showAndWait();
+    		}
+    		else {
+    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainSystem/Admin.fxml"));
+    	    	Parent root = loader.load();
+    	    	Scene scene = new Scene(root);
+    			Stage stage = new Stage();
+    			stage.setScene(scene);
+    			stage.show();
+    		}
+    	} 
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	finally {
+    		try {
+    			if(con != null)
+    				con.close();
+    			if(rs1 != null)
+    				rs1.close();
+    		}
+    		catch(SQLException e) {
+    			e.printStackTrace();
+    		}
+    	}
     }
 
     @FXML
@@ -115,17 +152,34 @@ public class Main extends Application
     {
     	Connection con = SQLConnecter.connect();
     	ResultSet rs1 = con.createStatement().executeQuery("SELECT ID FROM Users WHERE ID = '"+Main.currentUser.getId()+"' AND Type = 'Parent'");
-		if(!rs1.isBeforeFirst()) {
-			new Alert(Alert.AlertType.ERROR,"You Must Be A Parent To Access This").showAndWait();
-		}
-		else {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainSystem/Parents.fxml"));
-	    	Parent root = loader.load();
-	    	Scene scene = new Scene(root);
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.show();
-		}
+		
+    	try {
+    		if(!rs1.isBeforeFirst()) {
+    			new Alert(Alert.AlertType.ERROR,"You Must Be A Parent To Access This").showAndWait();
+    		}
+    		else {
+    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainSystem/Parents.fxml"));
+    	    	Parent root = loader.load();
+    	    	Scene scene = new Scene(root);
+    			Stage stage = new Stage();
+    			stage.setScene(scene);
+    			stage.show();
+    		}
+    	} 
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	finally {
+    		try {
+    			if(con != null)
+    				con.close();
+    			if(rs1 != null)
+    				rs1.close();
+    		}
+    		catch(SQLException e) {
+    			e.printStackTrace();
+    		}
+    	}
     }
     
     @FXML
@@ -144,17 +198,34 @@ public class Main extends Application
     {
     	Connection con = SQLConnecter.connect();
     	ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM Students WHERE StudentID = '"+Main.currentUser.getId()+"'");
-		if(!rs1.isBeforeFirst()) {
-			new Alert(Alert.AlertType.ERROR,format).showAndWait();
-		}
-		else {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainSystem/StudentLounge.fxml"));
-	    	Parent root = loader.load();
-	    	Scene scene = new Scene(root);
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.show();
-		}
+		
+    	try {
+    		if(!rs1.isBeforeFirst()) {
+    			new Alert(Alert.AlertType.ERROR,format).showAndWait();
+    		}
+    		else {
+    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainSystem/StudentLounge.fxml"));
+    	    	Parent root = loader.load();
+    	    	Scene scene = new Scene(root);
+    			Stage stage = new Stage();
+    			stage.setScene(scene);
+    			stage.show();
+    		}
+    	} 
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	finally {
+    		try {
+    			if(con != null)
+    				con.close();
+    			if(rs1 != null)
+    				rs1.close();
+    		}
+    		catch(SQLException e) {
+    			e.printStackTrace();
+    		}
+    	}
     }
 
     @FXML
@@ -162,17 +233,34 @@ public class Main extends Application
     {
     	Connection con = SQLConnecter.connect();
     	ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM Teachers WHERE Teacher_ID = '"+Main.currentUser.getId()+"'");
-		if(!rs1.isBeforeFirst()) {
-			new Alert(Alert.AlertType.ERROR,"You Must Be Logged In As A Student").showAndWait();
-		}
-		else {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainSystem/TeacherLounge.fxml"));
-	    	Parent root = loader.load();
-	    	Scene scene = new Scene(root);
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.show();
-		}
+		
+    	try {
+    		if(!rs1.isBeforeFirst()) {
+    			new Alert(Alert.AlertType.ERROR,"You Must Be Logged In As A Student").showAndWait();
+    		}
+    		else {
+    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainSystem/TeacherLounge.fxml"));
+    	    	Parent root = loader.load();
+    	    	Scene scene = new Scene(root);
+    			Stage stage = new Stage();
+    			stage.setScene(scene);
+    			stage.show();
+    		}
+    	} 
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	finally {
+    		try {
+    			if(con != null)
+    				con.close();
+    			if(rs1 != null)
+    				rs1.close();
+    		}
+    		catch(SQLException e) {
+    			e.printStackTrace();
+    		}
+    	}
     }
     
     @FXML
@@ -245,6 +333,7 @@ public class Main extends Application
     			createAccBtn.setVisible(false);
     			welcomeTxt.setVisible(true);
     			//
+    			loginBtn.setVisible(true);//for devs
     		}
     		else
     		{
@@ -281,6 +370,16 @@ public class Main extends Application
 	public static void main(String[] args)
 	{
 		launch(args);
+	}
+	
+	@FXML
+	void loginClick(ActionEvent e) throws IOException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainSystem/Index.fxml"));
+		Parent root = loader.load();
+		Scene scene = new Scene(root);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.show();
 	}
 	
 	@FXML

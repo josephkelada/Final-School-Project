@@ -138,7 +138,6 @@ public class ManageUsersController implements Initializable
 	@FXML
     void addUserClick(ActionEvent event) throws SQLException 
 	{
-		select();
 		if(!(firstNametxt.getText().isEmpty()) && !(lastNametxt.getText().isEmpty()) && !(emailTxt.getText().isEmpty()) && !(phoneNbTxt.getText().isEmpty()) && !(typeCbBox2.getSelectionModel().isEmpty())){
 			if(firstNametxt.getText().matches("[a-zA-Z]+") && lastNametxt.getText().matches("[a-zA-Z]+")) {//contains only one letter or more and nothing else
 				if(phoneNbTxt.getText().matches("^\\d{10}$")) {//make sure their are only 10 digits
@@ -173,26 +172,42 @@ public class ManageUsersController implements Initializable
 	{
 		ResultSet rs = null;
 		Connection con = SQLConnecter.connect();
-		if(!userIdDelete.getText().isEmpty()) {
-			if(userIdDelete.getText().matches("\\d+")) {
-				
-				rs = con.createStatement().executeQuery("SELECT * FROM Users WHERE ID = "+Integer.parseInt(userIdDelete.getText())+"");
-				
-				if(!rs.isBeforeFirst()) {//if there are no records
-					new Alert(Alert.AlertType.ERROR,"User doesn't Exist ").showAndWait();
+		
+		try {
+			
+			if(!userIdDelete.getText().isEmpty()) {
+				if(userIdDelete.getText().matches("\\d+")) {
+					
+					rs = con.createStatement().executeQuery("SELECT * FROM Users WHERE ID = "+Integer.parseInt(userIdDelete.getText())+"");
+					
+					if(!rs.isBeforeFirst()) {//if there are no records
+						new Alert(Alert.AlertType.ERROR,"User doesn't Exist ").showAndWait();
+					}
+					else{
+						person.delete(Integer.parseInt(userIdDelete.getText()));
+						new Alert(Alert.AlertType.ERROR,"User Deleted!").showAndWait();
+					}
+					rs.close();
 				}
-				else{
-					person.delete(Integer.parseInt(userIdDelete.getText()));
-					new Alert(Alert.AlertType.ERROR,"User Deleted!").showAndWait();
+				else {
+					new Alert(Alert.AlertType.ERROR,"User ID Must Only Be Numeric").showAndWait();
 				}
-				rs.close();
 			}
 			else {
-				new Alert(Alert.AlertType.ERROR,"User ID Must Only Be Numeric").showAndWait();
+				new Alert(Alert.AlertType.ERROR,"You Must Enter a valid ID").showAndWait();
 			}
+		}catch(SQLException e) {
+			e.printStackTrace();
 		}
-		else {
-			new Alert(Alert.AlertType.ERROR,"You Must Enter a valid ID").showAndWait();
+		finally{
+			try {
+				if(con != null)
+					con.close();
+				if(rs != null)
+					rs.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		select();
     }
@@ -234,6 +249,16 @@ public class ManageUsersController implements Initializable
     	{
 			e.printStackTrace();
 		}
+    	finally{
+    		try {
+    			if(con != null)
+    				con.close();
+    			if(rs1 != null)
+    				rs1.close();
+    		}catch(SQLException e) {
+    			e.printStackTrace();
+    		}
+    	}
     	select();
     }
 
@@ -242,26 +267,40 @@ public class ManageUsersController implements Initializable
     {    	
     	ResultSet rs = null;
     	Connection con = SQLConnecter.connect();
-    	
-    	if(!(newPhoneNb.getText().isEmpty()) && !(userIdPhone.getText().isEmpty()) && !(newPhoneNb.getText().isEmpty())) {
-    		if(userIdPhone.getText().matches("\\d+") && newPhoneNb.getText().matches("^\\d{10}$")) {//check if txtBoxes only contain ints
-    			rs = con.createStatement().executeQuery("SELECT * FROM Users WHERE ID = "+Integer.parseInt(userIdPhone.getText())+"");
-				if(!rs.isBeforeFirst()) {//if there are no records
-					new Alert(Alert.AlertType.ERROR,"User doesn't Exist ").showAndWait();
-				}
-				else{
-					person.updatePhoneNb(Integer.parseInt(userIdPhone.getText()), newPhoneNb.getText());
-					new Alert(Alert.AlertType.INFORMATION,"User Successfully Updated").showAndWait();
-				}
-				rs.close();
-    		}
-    		else {
-    			new Alert(Alert.AlertType.ERROR,"ID Should be numeric And Phone Nb should have 10 numbers").showAndWait();
-    		}
+    	try {
+    		
+    		if(!(newPhoneNb.getText().isEmpty()) && !(userIdPhone.getText().isEmpty()) && !(newPhoneNb.getText().isEmpty())) {
+        		if(userIdPhone.getText().matches("\\d+") && newPhoneNb.getText().matches("^\\d{10}$")) {//check if txtBoxes only contain ints
+        			rs = con.createStatement().executeQuery("SELECT * FROM Users WHERE ID = "+Integer.parseInt(userIdPhone.getText())+"");
+    				if(!rs.isBeforeFirst()) {//if there are no records
+    					new Alert(Alert.AlertType.ERROR,"User doesn't Exist ").showAndWait();
+    				}
+    				else{
+    					person.updatePhoneNb(Integer.parseInt(userIdPhone.getText()), newPhoneNb.getText());
+    					new Alert(Alert.AlertType.INFORMATION,"User Successfully Updated").showAndWait();
+    				}
+    				rs.close();
+        		}
+        		else {
+        			new Alert(Alert.AlertType.ERROR,"ID Should be numeric And Phone Nb should have 10 numbers").showAndWait();
+        		}
+        	}
+        	else {
+        		new Alert(Alert.AlertType.ERROR,"You Must Enter A Valid Phone Number And ID").showAndWait();
+        	}
+    	}catch(SQLException e) {
+    		e.printStackTrace();
     	}
-    	else {
-    		new Alert(Alert.AlertType.ERROR,"You Must Enter A Valid Phone Number And ID").showAndWait();
-    	}
+    	finally{
+			try {
+				if(con != null)
+					con.close();
+				if(rs != null)
+					rs.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
     	select();
     }
     
@@ -272,42 +311,45 @@ public class ManageUsersController implements Initializable
 	}
     
     void select() {
-    	
-    	String s = typeCbBox.getSelectionModel().getSelectedItem().toString();
-    	if(s == "Student")
-    	{
-    		try 
-    		{
-    			personList = person.getAllRecords(s);
-    		} catch (SQLException e) 
-    		{
-    			e.printStackTrace();
-    		}
-    		selectAllRecords(personList);
+    	if(typeCbBox.getSelectionModel().isEmpty()) {
+    		new Alert(Alert.AlertType.ERROR,"You Must select a person type above");
     	}
-    	
-    	else if (s == "Parent")
-    	{
-    		try 
-    		{
-    			personList = person.getAllRecords(s);
-    		} catch (SQLException e) 
-    		{
-    			e.printStackTrace();
-    		}
-    		selectAllRecords(personList);
-    	}
-    	
-    	else if (s == "Teacher")
-    	{
-    		try 
-    		{
-    			personList = person.getAllRecords(s);
-    		} catch (SQLException e) 
-    		{
-    			e.printStackTrace();
-    		}
-    		selectAllRecords(personList);
-    	}
+    	else {
+    		String s = typeCbBox.getSelectionModel().getSelectedItem().toString();
+    		
+        	if(s == "Student")
+        	{
+        		try 
+        		{
+        			personList = person.getAllRecords(s);
+        		} catch (SQLException e) 
+        		{
+        			e.printStackTrace();
+        		}
+        		selectAllRecords(personList);
+        	}
+        	else if (s == "Parent")
+        	{
+        		try 
+        		{
+        			personList = person.getAllRecords(s);
+        		} catch (SQLException e) 
+        		{
+        			e.printStackTrace();
+        		}
+        		selectAllRecords(personList);
+        	}
+        	else if (s == "Teacher")
+        	{
+        		try 
+        		{
+        			personList = person.getAllRecords(s);
+        		} catch (SQLException e) 
+        		{
+        			e.printStackTrace();
+        		}
+        		selectAllRecords(personList);
+        	}
+        }
     }
 }

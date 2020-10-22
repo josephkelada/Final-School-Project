@@ -100,6 +100,19 @@ public class manageCurriculumController implements Initializable{
     	catch(SQLException e) {
     		e.printStackTrace();
     	}
+    	finally {
+			try {
+				if(con != null)
+					con.close();
+				if(rs != null)
+					rs.close();
+				if(d != null)
+					d.close();
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
     }
 
 	void getMyClasses(){//populate our arraylist which contains all classes from teacher
@@ -128,6 +141,19 @@ public class manageCurriculumController implements Initializable{
 		catch(SQLException e){
 			e.printStackTrace();
 		}
+		finally {
+			try {
+				if(con != null)
+					con.close();
+				if(rs != null)
+					rs.close();
+				if(rs1 != null)
+					rs1.close();
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@FXML
@@ -150,6 +176,7 @@ public class manageCurriculumController implements Initializable{
             				new Alert(Alert.AlertType.ERROR,format).showAndWait();
             			}
             			else {
+            				rs.close();
             				rs = con.createStatement().executeQuery("SELECT SubClassID FROM SubClasses WHERE ClassID = '"+Integer.parseInt(addClassIdCbBox1.getSelectionModel().getSelectedItem().substring(0, 3).replaceAll("[^0-9]", ""))+"' AND SubClassName LIKE '%"+SubClassNamesCbBx.getSelectionModel().getSelectedItem()+"%'");
             				
             				if(rs.next()) {
@@ -173,6 +200,17 @@ public class manageCurriculumController implements Initializable{
        	}
 		catch(SQLException ex) {
 			ex.printStackTrace();
+		}
+		finally {
+			try {
+				if(con != null)
+					con.close();
+				if(rs != null)
+					rs.close();
+			}
+			catch(SQLException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 	
@@ -199,6 +237,17 @@ public class manageCurriculumController implements Initializable{
 		catch(SQLException ex){
 			ex.printStackTrace();
 		}
+		finally {
+			try {
+				if(con != null)
+					con.close();
+				if(rs != null)
+					rs.close();
+			}
+			catch(SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 	
 	void selectSubNamesRem() {//regular function 
@@ -223,6 +272,17 @@ public class manageCurriculumController implements Initializable{
 		}
 		catch(SQLException ex){
 			ex.printStackTrace();
+		}
+		finally {
+			try {
+				if(con != null)
+					con.close();
+				if(rs != null)
+					rs.close();
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

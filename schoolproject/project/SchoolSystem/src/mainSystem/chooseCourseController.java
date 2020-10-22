@@ -34,7 +34,7 @@ public class chooseCourseController implements Initializable{
 		Connection con = SQLConnecter.connect();
 		
 		try {
-			rs = con.createStatement().executeQuery("SELECT CourseName FROM All_Courses");
+			rs = con.createStatement().executeQuery("SELECT CourseName FROM All_Courses WHERE CourseName != (SELECT CurrentCourse FROM Students WHERE StudentID = "+Main.currentUser.getId()+")");
 			
 			while(rs.next()) {
 				allCourses.add(rs.getString("CourseName"));
@@ -103,6 +103,18 @@ public class chooseCourseController implements Initializable{
 			}catch(SQLException e) {
 				e.printStackTrace();
 			}
+			finally {
+				try {
+					if(rs != null)
+						rs.close();
+					if(rs2 != null)
+						rs2.close();
+					if(con != null)
+						con.close();
+				}catch(SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	
@@ -128,11 +140,20 @@ public class chooseCourseController implements Initializable{
 					flag = true;
 				}
 			}
-			rs.close();
-			rs2.close();
-			con.close();
 		}catch(SQLException e) {
 			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(rs != null)
+					rs.close();
+				if(rs2 != null)
+					rs2.close();
+				if(con != null)
+					con.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return flag;
 	}
