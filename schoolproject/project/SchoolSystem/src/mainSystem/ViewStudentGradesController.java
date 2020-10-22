@@ -107,11 +107,12 @@ public class ViewStudentGradesController implements Initializable{
     void selectStudentClick(ActionEvent event) {
 		try {
 			//make validation in case there are no students for the selected class in the grades table
+			if(!AllStudentsCbBx.getSelectionModel().isEmpty())
 			table.setItems(student.getSpecificStudent(Integer.parseInt(AllStudentsCbBx.getSelectionModel().getSelectedItem().substring(0, 3).replaceAll("[^0-9]","")),(Integer.parseInt(allMyClassesCbBx.getSelectionModel().getSelectedItem().substring(0, 3).replaceAll("[^0-9]", "")))));
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			e.printStackTrace();	
 		}
     }
 	
@@ -149,6 +150,9 @@ public class ViewStudentGradesController implements Initializable{
 		ResultSet rs = null;
 		ResultSet rs1 = null;
 		int count = 0;
+		myStudentIDs = new ArrayList<String>();
+		AllStudentsCbBx.getItems().clear();
+		
 		try {
 			updateGradeBtn.setDisable(false);
 			updateFinalGradeBtn.setDisable(false);
@@ -182,7 +186,7 @@ public class ViewStudentGradesController implements Initializable{
 	}
 	
 	@FXML
-	void updateClick(ActionEvent e) {
+	void updateClick(ActionEvent e) {																																															
 		if(AllStudentsCbBx.getSelectionModel().isEmpty()){
 			new Alert(Alert.AlertType.ERROR,"You Must Select A Student").showAndWait();
 		}
@@ -202,6 +206,7 @@ public class ViewStudentGradesController implements Initializable{
 				new Alert(Alert.AlertType.ERROR,"Grade Must be only a number").showAndWait();
 			}
 		}
+		selectStudentClick();
 	}
 	
 	@FXML
@@ -232,4 +237,15 @@ public class ViewStudentGradesController implements Initializable{
 		Stage stage1 = (Stage) table.getScene().getWindow();
     	stage1.close();
 	}
+	
+	void selectStudentClick() {
+		try {
+			if(!AllStudentsCbBx.getSelectionModel().isEmpty())
+			table.setItems(student.getSpecificStudent(Integer.parseInt(AllStudentsCbBx.getSelectionModel().getSelectedItem().substring(0, 3).replaceAll("[^0-9]","")),(Integer.parseInt(allMyClassesCbBx.getSelectionModel().getSelectedItem().substring(0, 3).replaceAll("[^0-9]", "")))));
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();	
+		}
+    }
 }
