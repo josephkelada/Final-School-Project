@@ -18,6 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+//i know that i could of implemented a function to optimize validaton so we don't have so many if clauses
 public class ManageUsersController implements Initializable
 {
 	Person person = new Person();
@@ -137,6 +138,7 @@ public class ManageUsersController implements Initializable
 	@FXML
     void addUserClick(ActionEvent event) throws SQLException 
 	{
+		select();
 		if(!(firstNametxt.getText().isEmpty()) && !(lastNametxt.getText().isEmpty()) && !(emailTxt.getText().isEmpty()) && !(phoneNbTxt.getText().isEmpty()) && !(typeCbBox2.getSelectionModel().isEmpty())){
 			if(firstNametxt.getText().matches("[a-zA-Z]+") && lastNametxt.getText().matches("[a-zA-Z]+")) {//contains only one letter or more and nothing else
 				if(phoneNbTxt.getText().matches("^\\d{10}$")) {//make sure their are only 10 digits
@@ -158,6 +160,7 @@ public class ManageUsersController implements Initializable
 		else {
 			new Alert(Alert.AlertType.ERROR,"Make Sure To Enter All Fields").showAndWait();
 		}
+		select();
     }
 	
 	void selectAllRecords(ObservableList<Person> personList)
@@ -180,18 +183,18 @@ public class ManageUsersController implements Initializable
 				}
 				else{
 					person.delete(Integer.parseInt(userIdDelete.getText()));
-					new Alert(Alert.AlertType.INFORMATION,"User Deleted!").showAndWait();
+					new Alert(Alert.AlertType.ERROR,"User Deleted!").showAndWait();
 				}
 				rs.close();
-				
 			}
 			else {
 				new Alert(Alert.AlertType.ERROR,"User ID Must Only Be Numeric").showAndWait();
 			}
 		}
 		else {
-			new Alert(Alert.AlertType.ERROR,"You Must Select A type and Enter a valid ID").showAndWait();
+			new Alert(Alert.AlertType.ERROR,"You Must Enter a valid ID").showAndWait();
 		}
+		select();
     }
 
     @FXML
@@ -231,11 +234,12 @@ public class ManageUsersController implements Initializable
     	{
 			e.printStackTrace();
 		}
+    	select();
     }
 
     @FXML
     void updatePhoneClick(ActionEvent event) throws NumberFormatException, SQLException 
-    {
+    {    	
     	ResultSet rs = null;
     	Connection con = SQLConnecter.connect();
     	
@@ -258,6 +262,7 @@ public class ManageUsersController implements Initializable
     	else {
     		new Alert(Alert.AlertType.ERROR,"You Must Enter A Valid Phone Number And ID").showAndWait();
     	}
+    	select();
     }
     
     @FXML
@@ -265,4 +270,44 @@ public class ManageUsersController implements Initializable
 		Stage stage1 = (Stage) table.getScene().getWindow();
     	stage1.close();
 	}
+    
+    void select() {
+    	
+    	String s = typeCbBox.getSelectionModel().getSelectedItem().toString();
+    	if(s == "Student")
+    	{
+    		try 
+    		{
+    			personList = person.getAllRecords(s);
+    		} catch (SQLException e) 
+    		{
+    			e.printStackTrace();
+    		}
+    		selectAllRecords(personList);
+    	}
+    	
+    	else if (s == "Parent")
+    	{
+    		try 
+    		{
+    			personList = person.getAllRecords(s);
+    		} catch (SQLException e) 
+    		{
+    			e.printStackTrace();
+    		}
+    		selectAllRecords(personList);
+    	}
+    	
+    	else if (s == "Teacher")
+    	{
+    		try 
+    		{
+    			personList = person.getAllRecords(s);
+    		} catch (SQLException e) 
+    		{
+    			e.printStackTrace();
+    		}
+    		selectAllRecords(personList);
+    	}
+    }
 }
